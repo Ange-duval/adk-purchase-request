@@ -1,0 +1,75 @@
+<odoo>
+
+    <!-- Vue Kanban -->
+    <record id="view_adk_pro_kanban" model="ir.ui.view">
+        <field name="name">adk.purchase.request.order.kanban</field>
+        <field name="model">adk.purchase.request.order</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="state"/>
+                <field name="is_late"/>
+                <field name="expected_date"/>
+                <field name="total_estimated_cost"/>
+                <field name="demandeur_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="d-flex justify-content-between">
+                                <strong><field name="name"/></strong>
+                                <field name="demandeur_id" widget="many2one_avatar_user"/>
+                            </div>
+                            <div t-if="record.is_late.raw_value" class="badge text-bg-danger mt-1">En retard</div>
+                            <div class="mt-2">
+                                <field name="total_estimated_cost" widget="monetary"/>
+                            </div>
+                            <div class="text-muted small">
+                                Souhaité le <field name="expected_date"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Vue Liste : demandes en retard -->
+    <record id="view_adk_pro_late_list" model="ir.ui.view">
+        <field name="name">adk.purchase.request.order.late.list</field>
+        <field name="model">adk.purchase.request.order</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="is_late == True">
+                <field name="name"/>
+                <field name="demandeur_id"/>
+                <field name="expected_date"/>
+                <field name="total_estimated_cost" widget="monetary"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="state" widget="badge"/>
+                <field name="is_late" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action : Mes demandes -->
+    <record id="action_adk_pro_my" model="ir.actions.act_window">
+        <field name="name">Mes demandes</field>
+        <field name="res_model">adk.purchase.request.order</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('demandeur_id', '=', uid)]</field>
+        <field name="context">{'search_default_demandeur_id': uid, 'search_disable_custom_filters': True}</field>
+        <field name="search_view_id" ref="view_adk_pro_search"/>
+    </record>
+
+    <!-- Action : Demandes en retard -->
+    <record id="action_adk_pro_late" model="ir.actions.act_window">
+        <field name="name">Demandes en retard</field>
+        <field name="res_model">adk.purchase.request.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_late', '=', True)]</field>
+        <field name="context">{'search_disable_custom_filters': True}</field>
+        <field name="search_view_id" ref="view_adk_pro_search"/>
+    </record>
+
+    <!-- Tableau de bord général retiré : le tableau de bord par article (parcarticle) est la référence -->
+
+</odoo>

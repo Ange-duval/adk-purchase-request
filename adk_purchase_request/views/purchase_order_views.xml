@@ -1,0 +1,91 @@
+<odoo>
+
+    <!--
+        CORRECTION : liaison directe avec le module Achats natif.
+        Jusqu'ici, rien ne permettait, depuis un bon de commande (Achats > Commandes),
+        de savoir qu'il provenait d'une demande d'achat ADK, ni d'y revenir en un clic.
+    -->
+
+    <!-- Bouton statistique "Demande d'achat source" sur le formulaire du bon de commande -->
+    <record id="view_purchase_order_form_adk_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form.adk.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_adk_request" type="object" class="oe_stat_button"
+                        icon="fa-file-text-o" invisible="not adk_request_id">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Demande d'achat</span>
+                    </div>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="adk_request_id" readonly="1" invisible="not adk_request_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Colonne "Demande d'achat" dans la liste des commandes / demandes de prix -->
+    <record id="view_purchase_order_list_adk_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.list.adk.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="adk_request_id" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Filtre de recherche par demande d'achat source -->
+    <record id="view_purchase_order_search_adk_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.search.adk.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="adk_request_id" string="Demande d'achat"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Menu : accès direct aux demandes d'achat ADK depuis l'application Achats -->
+    <menuitem id="menu_adk_pro_inside_purchase" name="Demandes d'achat (ADK)"
+              parent="purchase.menu_procurement_management" action="action_adk_pro" sequence="10"/>
+
+    <!-- Action : lignes de commande issues des demandes d'achat ADK -->
+    <record id="view_adk_purchase_order_line_list" model="ir.ui.view">
+        <field name="name">purchase.order.line.adk.list</field>
+        <field name="model">purchase.order.line</field>
+        <field name="arch" type="xml">
+            <list string="Lignes de commande (ADK)" create="false" edit="false" delete="false">
+                <field name="order_id"/>
+                <field name="adk_request_line_id"/>
+                <field name="name"/>
+                <field name="partner_id" string="Fournisseur"/>
+                <field name="product_id"/>
+                <field name="product_qty"/>
+                <field name="product_uom"/>
+                <field name="price_unit"/>
+                <field name="price_subtotal"/>
+                <field name="date_planned"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_adk_purchase_order_lines_inside_purchase" model="ir.actions.act_window">
+        <field name="name">Lignes de commande (ADK)</field>
+        <field name="res_model">purchase.order.line</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_adk_purchase_order_line_list"/>
+        <field name="domain">[('adk_request_line_id', '!=', False)]</field>
+    </record>
+
+    <menuitem id="menu_adk_order_lines_inside_purchase" name="Lignes de commande (ADK)"
+              parent="purchase.menu_procurement_management" action="action_adk_purchase_order_lines_inside_purchase" sequence="11"/>
+
+    <menuitem id="menu_adk_dashboard_inside_purchase" name="Tableau de bord articles (ADK)"
+              parent="purchase.menu_procurement_management" action="action_adk_pro_article_dashboard" sequence="12"/>
+
+</odoo>

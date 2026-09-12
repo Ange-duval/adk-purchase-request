@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Recherche : article, DA, fournisseur, période, état, regroupements -->
+    <record id="view_adk_purchase_request_line_search" model="ir.ui.view">
+        <field name="name">adk.purchase.request.line.search</field>
+        <field name="model">adk.purchase.request.line</field>
+        <field name="arch" type="xml">
+            <search string="Recherche des articles">
+                <field name="product_id" string="Article"/>
+                <field name="order_id" string="N° Demande d'achat"/>
+                <field name="supplier_id" string="Fournisseur"/>
+                <filter string="Période (date de la demande)" name="filter_request_period" date="request_date"
+                        default_period="year,month"/>
+                <separator/>
+                <filter string="Brouillon" name="filter_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Approuvé" name="filter_approved" domain="[('state', '=', 'approved')]"/>
+                <filter string="Commande en cours" name="filter_ordered" domain="[('line_status', '=', 'ordered')]"/>
+                <filter string="Livré" name="filter_received" domain="[('qty_received', '>', 0)]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter string="Article" name="group_product" context="{'group_by': 'product_id'}"/>
+                    <filter string="Demande d'achat (DA)" name="group_da" context="{'group_by': 'order_id'}"/>
+                    <filter string="Fournisseur suggéré" name="group_supplier" context="{'group_by': 'supplier_id'}"/>
+                    <filter string="État" name="group_state" context="{'group_by': 'state'}"/>
+                    <separator/>
+                    <filter string="Jour" name="group_day" context="{'group_by': 'request_date:day'}"/>
+                    <filter string="Mois" name="group_month" context="{'group_by': 'request_date:month'}"/>
+                    <filter string="Trimestre" name="group_quarter" context="{'group_by': 'request_date:quarter'}"/>
+                    <filter string="Année" name="group_year" context="{'group_by': 'request_date:year'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Kanban : cartes design par article -->
+    <record id="view_adk_purchase_request_line_kanban" model="ir.ui.view">
+        <field name="name">adk.purchase.request.line.kanban</field>
+        <field name="model">adk.purchase.request.line</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column" records_per_row="3" default_group_by="state">
+                <field name="product_id"/>
+                <field name="order_id"/>
+                <field name="state"/>
+                <field name="po_refs"/>
+                <field name="qty"/>
+                <field name="rfq_po_qty"/>
+                <field name="qty_received"/>
+                <field name="estimated_subtotal"/>
+                <field name="ordered_subtotal"/>
+                <field name="received_subtotal"/>
+                <field name="supplier_id"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click d-flex flex-column h-100">
+                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                <div class="text-truncate">
+                                    <span class="fw-semibold text-primary">
+                                        <field name="product_id"/>
+                                    </span>
+                                </div>
+                                <span t-attf-class="badge {{ record.state.raw_value == 'draft' and 'text-bg-secondary' or record.state.raw_value == 'to_approve' and 'text-bg-warning' or record.state.raw_value == 'approved' and 'text-bg-info' or record.state.raw_value == 'refused' and 'text-bg-danger' or 'text-bg-success' }}">
+                                    <field name="state" groups="adk_purchase_request.group_adk_purchase_request_user"/>
+                                </span>
+                            </div>
+                            <div class="text-muted small mb-2">
+                                <i class="fa fa-file-text-o me-1"/><span class="fw-semibold"><field name="order_id"/></span>
+                                <t t-if="record.po_refs.value">
+                                    <span class="mx-1">·</span>
+                                    <i class="fa fa-shopping-cart me-1"/>
+                                    <span><field name="po_refs"/></span>
+                                </t>
+                            </div>
+                            <div class="row g-1 text-center small my-auto">
+                                <div class="col-4">
+                                    <div class="border rounded-3 py-2 bg-light">
+                                        <div class="fw-bold"><field name="qty"/></div>
+                                        <div class="text-muted">Demandé</div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="border rounded-3 py-2 bg-light">
+                                        <div class="fw-bold text-info"><field name="rfq_po_qty"/></div>
+                                        <div class="text-muted">Commandé</div>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="border rounded-3 py-2 bg-light">
+                                        <div class="fw-bold text-success"><field name="qty_received"/></div>
+                                        <div class="text-muted">Livré</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-2 d-flex justify-content-between border-top pt-2 small">
+                                <span class="text-muted"><i class="fa fa-tag me-1"/>Est.&#160;:
+                                    <field name="estimated_subtotal" widget="monetary"/>
+                                </span>
+                                <span class="text-muted"><i class="fa fa-check-circle me-1"/>Cmd.&#160;:
+                                    <field name="ordered_subtotal" widget="monetary"/>
+                                </span>
+                            </div>
+                            <div class="text-muted small mt-1">
+                                Fournisseur&#160;: <field name="supplier_id"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Pivot : articles / DA avec quantités et coûts -->
+    <record id="view_adk_purchase_request_line_pivot" model="ir.ui.view">
+        <field name="name">adk.purchase.request.line.pivot</field>
+        <field name="model">adk.purchase.request.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Analyse par article">
+                <field name="order_id" type="row" string="N° DA"/>
+                <field name="product_id" type="row" string="Article"/>
+                <field name="request_date" type="col"/>
+                <field name="qty" type="measure" string="Qté demandée"/>
+                <field name="rfq_po_qty" type="measure" string="Qté commandée"/>
+                <field name="qty_received" type="measure" string="Qté livrée"/>
+                <field name="estimated_subtotal" type="measure" string="Coût estimé"/>
+                <field name="ordered_subtotal" type="measure" string="Montant commandé"/>
+                <field name="received_subtotal" type="measure" string="Montant reçu"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Graph : tendances par période, réparties par article -->
+    <record id="view_adk_purchase_request_line_graph" model="ir.ui.view">
+        <field name="name">adk.purchase.request.line.graph</field>
+        <field name="model">adk.purchase.request.line</field>
+        <field name="arch" type="xml">
+            <graph string="Évolution des quantités" type="bar" stacked="true">
+                <field name="request_date" type="col" interval="month"/>
+                <field name="product_id" type="row"/>
+                <field name="qty" type="measure" string="Qté demandée"/>
+                <field name="rfq_po_qty" type="measure" string="Qté commandée"/>
+                <field name="qty_received" type="measure" string="Qté livrée"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Liste : le détail avec les n° de DA et de commandes acheteurs -->
+    <record id="view_adk_purchase_request_line_list" model="ir.ui.view">
+        <field name="name">adk.purchase.request.line.list</field>
+        <field name="model">adk.purchase.request.line</field>
+        <field name="arch" type="xml">
+            <list string="Articles demandés" create="false" edit="false" delete="false"
+                  decoration-success="qty_received >= qty and qty > 0"
+                  decoration-info="rfq_po_qty &gt; 0 and qty_received &lt; qty">
+                <field name="order_id" string="N° Demande d'achat"/>
+                <field name="request_date" string="Date"/>
+                <field name="product_id" string="Article"/>
+                <field name="description" optional="show"/>
+                <field name="qty" string="Qté demandée"/>
+                <field name="rfq_po_qty" string="Qté commandée"/>
+                <field name="qty_received" string="Qté livrée"/>
+                <field name="product_uom_id" string="Unité" groups="uom.group_uom"/>
+                <field name="estimated_subtotal" string="Coût estimé"/>
+                <field name="ordered_subtotal" string="Montant commandé"/>
+                <field name="received_subtotal" string="Montant reçu"/>
+                <field name="po_refs" string="N° commandes acheteurs"/>
+                <field name="supplier_id" string="Fournisseur"/>
+                <field name="state" string="État" widget="badge" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action du tableau de bord par article -->
+    <record id="action_adk_pro_article_dashboard" model="ir.actions.act_window">
+        <field name="name">Tableau de bord par article</field>
+        <field name="res_model">adk.purchase.request.line</field>
+        <field name="view_mode">kanban,graph,pivot,list</field>
+        <field name="search_view_id" ref="view_adk_purchase_request_line_search"/>
+        <field name="context">{'search_default_group_year': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Aucun article demandé
+            </p>
+            <p>
+                Les articles apparaissent dès qu'une demande d'achat possède au moins une ligne.
+                Filtrez par période (année, mois, jour), par article, par fournisseur ou par n° de DA.
+            </p>
+        </field>
+    </record>
+
+</odoo>

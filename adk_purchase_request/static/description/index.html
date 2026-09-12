@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>ADK Demande d'Achat</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;color:#2b2530;line-height:1.6;margin:0;padding:0 0 40px;background:#fff}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+.cover{width:100%;display:block;margin:0 0 28px}
+h1{font-size:30px;margin:0 0 8px}
+h2{font-size:23px;margin-top:44px;color:#714b67;border-bottom:2px solid #f4f2f5;padding-bottom:8px}
+h3{margin:0 0 6px;color:#2b2530;font-size:17px}
+p,li{font-size:15px}
+.lead{font-size:16px;color:#4a424c;max-width:820px}
+.badge{display:inline-block;background:#714b67;color:#fff;padding:5px 12px;border-radius:999px;margin:3px 6px 0 0;font-size:13px}
+.roles{background:#fff9ec;border:1px solid #f0dfae;border-radius:14px;padding:26px 28px;margin:18px 0 8px}
+.roles h2{margin-top:0;border:none;padding-bottom:0;color:#8a5a00;font-size:21px;text-align:center}
+.roles > p.sub{text-align:center;color:#6a5a2e;font-size:14px;margin:4px auto 20px;max-width:760px}
+.roles-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.role-card{background:#fff;border:1px solid #efe1b8;border-radius:12px;padding:18px 20px}
+.role-card h3{color:#1b3b6f;font-size:16px}
+.role-card ul{margin:8px 0 0;padding-left:18px}
+.role-card li{font-size:14px;color:#4a424c;margin-bottom:4px}
+.step{border:1px solid #e6e1e6;border-radius:12px;padding:20px 22px;margin:16px 0;background:#fff}
+.step .num{display:inline-block;background:#714b67;color:#fff;border-radius:999px;width:26px;height:26px;text-align:center;line-height:26px;font-size:14px;margin-right:8px}
+.step img{width:100%;max-width:1100px;border:1px solid #e6e1e6;border-radius:10px;margin-top:14px;display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:12px}
+.card{border:1px solid #e6e1e6;border-radius:12px;padding:16px;background:#fff}
+.card b{display:block;margin-bottom:4px;color:#2b2530}
+table{border-collapse:collapse;width:100%;margin-top:12px}
+th,td{border:1px solid #e6e1e6;padding:9px 11px;font-size:13.5px;text-align:left;vertical-align:top}
+th{background:#714b67;color:#fff}
+tr:nth-child(even) td{background:#faf9fa}
+.note{background:#f4f2f5;border-left:4px solid #714b67;border-radius:6px;padding:12px 16px;margin-top:14px;font-size:14px}
+.note.warn{background:#fff4e8;border-left-color:#c47500}
+.note.lock{background:#f2f6fb;border-left-color:#2f5f9e}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:bold}
+.pill.draft{background:#e5e1e6;color:#4a3f4a}
+.pill.approve{background:#fbe9c9;color:#8a5a00}
+.pill.approved{background:#d8ecdf;color:#1c6b3d}
+.pill.refused{background:#f6d9d9;color:#a33a3a}
+.pill.done{background:#714b67;color:#fff}
+
+h2.section-title{display:flex;align-items:center;gap:12px}
+h2.section-title .idx{flex:none;width:34px;height:34px;border-radius:50%;background:#714b67;color:#fff;font-size:15px;font-weight:bold;display:flex;align-items:center;justify-content:center;border-bottom:none}
+.flow-wrap{background:#faf9fb;border:1px solid #e6e1e6;border-radius:14px;padding:26px 24px 22px;margin:18px 0 22px}
+.flow-main{display:flex;align-items:flex-start;justify-content:center;flex-wrap:wrap;gap:0}
+.flow-node{padding:10px 20px;border-radius:999px;font-size:14px;font-weight:bold;white-space:nowrap;border:1px solid transparent}
+.flow-node.draft{background:#e5e1e6;color:#4a3f4a;border-color:#b9b0ba}
+.flow-node.approve{background:#fbe9c9;color:#8a5a00;border-color:#e0c07a}
+.flow-node.approved{background:#d8ecdf;color:#1c6b3d;border-color:#a9d6b9}
+.flow-node.refused{background:#f6d9d9;color:#a33a3a;border-color:#e3a9a9}
+.flow-node.done{background:#714b67;color:#fff;border-color:#714b67}
+.flow-link{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 10px 0;min-width:100px}
+.flow-link .arrow{font-size:16px;color:#b3a8b8;line-height:1}
+.flow-link small{font-size:11px;color:#7a7280;margin-top:3px;text-align:center}
+.flow-branch{display:flex;flex-direction:column;align-items:center;gap:6px;margin:18px auto 0;width:fit-content}
+.flow-branch .arrow{font-size:16px;color:#c15757}
+.flow-branch small{font-size:11.5px;color:#a33a3a}
+.flow-return{display:flex;align-items:center;gap:8px;justify-content:center;text-align:center;margin-top:20px;padding-top:16px;border-top:1px dashed #ddd6df;font-size:12.5px;color:#6a6270}
+.flow-return .arrow{font-size:15px;color:#9b8ea0;flex:none}
+@media (max-width:700px){.flow-link{min-width:70px}}
+.cycle-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:6px}
+.cycle-card{border:1px solid #e6e1e6;border-left:5px solid #9b8ea0;border-radius:10px;padding:14px 16px;background:#fff}
+.cycle-card.draft{border-left-color:#8a8189}
+.cycle-card.approve{border-left-color:#c9973c}
+.cycle-card.approved{border-left-color:#3f9463}
+.cycle-card.refused{border-left-color:#c15757}
+.cycle-card.done{border-left-color:#714b67}
+.cycle-card .head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cycle-card .head .idx{flex:none;width:22px;height:22px;border-radius:50%;background:#f4f2f5;color:#6a6270;font-size:12px;font-weight:bold;display:flex;align-items:center;justify-content:center}
+.cycle-card dl{margin:0}
+.cycle-card dt{font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;color:#9b93a0;margin-top:8px}
+.cycle-card dt:first-of-type{margin-top:0}
+.cycle-card dd{margin:2px 0 0;font-size:13.5px;color:#3a343d}
+.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.integ-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;margin-top:14px}
+.integ-col{border:1px solid #e6e1e6;border-radius:12px;padding:18px 20px;background:#fff;height:100%}
+.integ-col h3{color:#714b67;font-size:15px;margin-bottom:10px}
+.integ-col ol{margin:0;padding-left:20px}
+.integ-col li{font-size:13.5px;color:#4a424c;margin-bottom:8px}
+.integ-col li:last-child{margin-bottom:0}
+.integ-arrow{flex:none;font-size:22px;color:#c9c0cb;text-align:center}
+.feat-grid .card{position:relative;padding-top:20px}
+.feat-grid .card .idx{position:absolute;top:-10px;left:16px;width:24px;height:24px;border-radius:50%;background:#714b67;color:#fff;font-size:12px;font-weight:bold;display:flex;align-items:center;justify-content:center}
+@media (max-width:780px){.integ-wrap{grid-template-columns:1fr}.integ-arrow{transform:rotate(90deg)}.notes-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<img class="cover" src="banner.png" alt="ADK Demande d'Achat — demandes internes, approbation, RFQ multi-fournisseurs, suivi des livraisons">
+
+<p class="lead">Gestion complète des demandes d'achat internes dans Odoo 18 : circuit d'approbation, sélection des lignes pour la demande de prix (par fournisseur, en plusieurs vagues si besoin), suivi des commandes et des réceptions, tableau de bord par article — le tout intégré nativement dans l'application Achats.</p>
+<span class="badge">Odoo 18</span> &nbsp;&middot;&nbsp; <span class="badge">Circuit d'approbation</span> &nbsp;&middot;&nbsp; <span class="badge">RFQ multi-fournisseurs</span> &nbsp;&middot;&nbsp; <span class="badge">Suivi des livraisons</span> &nbsp;&middot;&nbsp; <span class="badge">Reporting par article</span>
+
+<div class="roles">
+<h2>⚠ Rôles utilisateurs et droits d'accès — à lire avant d'installer</h2>
+<p class="sub">Le module ajoute deux rôles d'accès. Vérifiez qu'ils correspondent à l'organisation de votre équipe avant la mise en production.</p>
+<div class="roles-grid">
+<div class="role-card">
+<h3>Utilisateur Demande d'Achat</h3>
+<ul>
+<li>Crée ses propres demandes d'achat et leurs lignes d'articles</li>
+<li>Peut les modifier tant qu'elles restent en Brouillon</li>
+<li>Accès en lecture/écriture aux demandes et à leurs lignes (aucune suppression)</li>
+<li>Hérite automatiquement des droits Achats (Utilisateur) et Stock (Utilisateur) nécessaires pour consulter les bons de commande et transferts générés</li>
+</ul>
+</div>
+<div class="role-card">
+<h3>Manager Demande d'Achat</h3>
+<ul>
+<li>Cumule tous les droits Utilisateur, plus les droits Achats (Manager)</li>
+<li>Seul habilité à Approuver, Rejeter ou Terminer une demande</li>
+<li>Seul habilité à réinitialiser en Brouillon une demande déjà Approuvée</li>
+<li>Accès complet (création/modification/suppression) sur les demandes et leurs lignes</li>
+</ul>
+</div>
+</div>
+</div>
+
+<h2>Le processus, étape par étape</h2>
+
+<div class="step">
+<h3>1. Droits d'accès</h3>
+<p>Depuis Paramètres → Utilisateurs et sociétés → Utilisateurs, chaque collaborateur reçoit l'un des deux rôles du module dans la section « Achats » de sa fiche : <b>Utilisateur Demande d'Achat</b> ou <b>Manager Demande d'Achat</b> (voir le détail des droits ci-dessus).</p>
+<img src="screenshots/01-droits-utilisateur.png" alt="Droits d'accès : rôles Utilisateur et Manager Demande d'Achat">
+</div>
+
+<div class="step">
+<h3>2. Création de la demande (Brouillon)</h3>
+<p>Le demandeur crée sa demande : département, approbateur, site de livraison, société, unité opérationnelle, devise, puis ajoute ses lignes d'articles (quantité, coût unitaire estimé, date souhaitée, destination). Tant que la demande reste en <span class="pill draft">Brouillon</span>, tous les champs et toutes les lignes restent modifiables. Un clic sur « Demander l'autorisation » vérifie qu'un approbateur est renseigné et que chaque ligne a un article et une quantité strictement positive, puis transmet la demande au manager.</p>
+<img src="screenshots/02-creation-brouillon.png" alt="Demande en brouillon avec ses lignes d'articles">
+</div>
+
+<div class="step">
+<h3>3. Approbation par le manager</h3>
+<p>La demande passe à l'état <span class="pill approve">À approuver</span> et se verrouille : seul un <b>Manager Demande d'Achat</b> peut cliquer sur « Approuver » ou « Rejeter ». En cas de refus, ou pour corriger une erreur avant approbation, le bouton « Réinitialiser » repasse la demande en Brouillon.</p>
+<img src="screenshots/03-approbation-manager.png" alt="Décision du manager : approuver ou rejeter la demande">
+</div>
+
+<div class="step">
+<h3>4. Sélection des lignes et création de la demande de prix</h3>
+<p>Une fois <span class="pill approved">Approuvée</span>, la demande n'est pas encore commandée. Sur chaque ligne encore « À commander », on coche « Inclure DP » et on renseigne le fournisseur suggéré, puis on clique sur « Créer une demande de prix ». Le module regroupe automatiquement les lignes cochées par fournisseur et génère une demande de prix (RFQ) distincte pour chacun. <b>Cette étape est répétable</b> : les lignes non cochées restent disponibles pour une prochaine vague de commande, par exemple pour commander le reste plus tard ou auprès d'un autre fournisseur.</p>
+<img src="screenshots/04-selection-fournisseur-rfq.png" alt="Sélection des lignes et des fournisseurs avant création de la demande de prix">
+</div>
+
+<div class="step">
+<h3>5. Suivi des commandes et des réceptions</h3>
+<p>La demande garde un lien direct vers tous les documents générés : bons de commande, lignes de commande et transferts de réception, accessibles via des boutons statistiques en haut du formulaire. Pour chaque ligne, le statut d'achat (À commander / Commandé / Reçu) ainsi que les quantités et montants commandés/reçus se mettent à jour automatiquement à partir des bons de commande liés.</p>
+<img src="screenshots/05-suivi-commandes.png" alt="Demande approuvée avec ses bons de commande et lignes de commande générés">
+</div>
+
+<div class="step">
+<h3>6. Tableau de bord par article</h3>
+<p>Le menu « Tableau de bord par article » offre une vision transverse de tous les articles demandés, tous statuts confondus : vues Kanban, graphique, tableau croisé et liste, avec filtres par article, par n° de demande d'achat, par fournisseur, par état et par période (jour / mois / trimestre / année).</p>
+<img src="screenshots/06-tableau-bord-kanban.png" alt="Tableau de bord par article en vue Kanban">
+</div>
+
+<div class="step">
+<h3>7. Analyse croisée des quantités et des montants</h3>
+<p>La vue tableau croisé (pivot) détaille, par article et par demande d'achat, les quantités demandées, commandées et livrées, ainsi que les montants estimés, commandés et reçus, période par période.</p>
+<img src="screenshots/07-tableau-croise-articles.png" alt="Vue tableau croisé : quantités et montants par article et par demande">
+</div>
+
+<h2>8. Cycle de vie d'une demande</h2>
+<p class="lead">Cinq états, un circuit clair : le schéma ci-dessous montre qui déclenche chaque transition ; le détail complet est repris juste en dessous.</p>
+<img src="diagrams/cycle-flow.png" alt="Schéma du cycle de vie : Brouillon vers À approuver vers Approuvé vers Terminé, avec rejet vers Refusé et réinitialisations possibles vers Brouillon" style="width:100%;max-width:1100px;display:block;margin-top:14px">
+<img src="diagrams/cycle-table.png" alt="Tableau détaillé des 5 états : déclencheur, qui peut agir, actions possibles" style="width:100%;max-width:1100px;display:block;margin-top:18px">
+
+<p><b>Verrouillage des données :</b> une fois sortie du Brouillon, la demande verrouille ses champs d'en-tête et ses lignes existantes (seules les cases « Inclure DP » et « Fournisseur suggéré » restent modifiables en Approuvé, le temps de préparer les demandes de prix). Impossible de contourner le circuit d'approbation en modifiant discrètement une ligne après coup.</p>
+<p><b>Protection anti-suppression :</b> une demande d'achat ne peut pas être supprimée si elle a déjà généré au moins un bon de commande, une ligne de commande ou une réception — la traçabilité complète est ainsi garantie.</p>
+
+<h2>9. Intégration native avec l'application Achats</h2>
+<p class="lead">Aucun aller-retour entre applications : chaque document reste relié à son origine, dans les deux sens.</p>
+<img src="diagrams/integration.png" alt="Intégration native : depuis un bon de commande on retrouve la demande ADK d'origine ; depuis l'application Achats, trois menus ADK sont disponibles" style="width:100%;max-width:1100px;display:block;margin-top:14px">
+
+<h2>10. Fonctionnalités</h2>
+<img src="diagrams/features.png" alt="Six fonctionnalités clés : workflow contrôlé, RFQ multi-fournisseurs, suivi complet, traçabilité, reporting, rapport PDF" style="width:100%;max-width:1100px;display:block;margin-top:10px">
+
+<p style="margin-top:22px">Module 100% natif Odoo 18, construit sur les applications Achats (purchase, purchase_stock), Stock, RH et Discuss (mail), sans dépendance externe.</p>
+
+</div>
+</body>
+</html>

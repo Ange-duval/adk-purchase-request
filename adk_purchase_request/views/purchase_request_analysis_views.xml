@@ -1,0 +1,78 @@
+<odoo>
+
+    <!-- Vue Recherche -->
+    <record id="view_adk_pro_search" model="ir.ui.view">
+        <field name="name">adk.purchase.request.order.search</field>
+        <field name="model">adk.purchase.request.order</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="demandeur_id"/>
+                <filter string="Brouillon" name="filter_draft" domain="[('state','=','draft')]"/>
+                <filter string="A approuver" name="filter_to_approve" domain="[('state','=','to_approve')]"/>
+                <filter string="Approuvé" name="filter_approved" domain="[('state','=','approved')]"/>
+                <filter string="Refusé" name="filter_refused" domain="[('state','=','refused')]"/>
+                <filter string="Terminé" name="filter_done" domain="[('state','=','done')]"/>
+                <filter string="En retard" name="filter_late" domain="[('is_late','=',True)]"/>
+                <separator/>
+                <filter string="Date souhaitée" name="filter_expected_date" date="expected_date"/>
+                <group expand="0" string="Regrouper par">
+                    <filter string="État" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Demandeur" name="group_demandeur" context="{'group_by': 'demandeur_id'}"/>
+                    <filter string="Date souhaitée" name="group_expected_date" context="{'group_by': 'expected_date:month'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vue Graphique -->
+    <record id="view_adk_pro_graph" model="ir.ui.view">
+        <field name="name">adk.purchase.request.order.graph</field>
+        <field name="model">adk.purchase.request.order</field>
+        <field name="arch" type="xml">
+            <graph string="Analyse des demandes d'achat" type="bar" sample="1">
+                <field name="demandeur_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="total_estimated_cost" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Vue Pivot -->
+    <record id="view_adk_pro_pivot" model="ir.ui.view">
+        <field name="name">adk.purchase.request.order.pivot</field>
+        <field name="model">adk.purchase.request.order</field>
+        <field name="arch" type="xml">
+            <pivot string="Analyse des demandes d'achat" sample="1">
+                <field name="demandeur_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="total_estimated_cost" type="measure"/>
+                <field name="total_qty_requested" type="measure"/>
+                <field name="line_count" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Vue Calendrier -->
+    <record id="view_adk_pro_calendar" model="ir.ui.view">
+        <field name="name">adk.purchase.request.order.calendar</field>
+        <field name="model">adk.purchase.request.order</field>
+        <field name="arch" type="xml">
+            <calendar string="Calendrier des demandes d'achat" date_start="expected_date" color="demandeur_id" mode="month">
+                <field name="name"/>
+                <field name="demandeur_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Action Analyse -->
+    <record id="action_adk_pro_analysis" model="ir.actions.act_window">
+        <field name="name">Analyse des demandes d'achat</field>
+        <field name="res_model">adk.purchase.request.order</field>
+        <field name="view_mode">graph,pivot,calendar,list,form</field>
+        <field name="search_view_id" ref="view_adk_pro_search"/>
+        <field name="context">{'search_default_group_state': 1, 'search_disable_custom_filters': True}</field>
+    </record>
+
+</odoo>

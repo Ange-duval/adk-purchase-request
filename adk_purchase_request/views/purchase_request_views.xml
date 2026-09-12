@@ -1,0 +1,118 @@
+<odoo>
+	<!-- Vue Liste -->
+	<record id="view_adk_pro_list" model="ir.ui.view">
+		<field name="name">adk.purchase.request.order.list</field>
+		<field name="model">adk.purchase.request.order</field>
+		<field name="arch" type="xml">
+			<list decoration-danger="is_late == True">
+				<field name="name"/>
+				<field name="demandeur_id" readonly="state != 'draft'"/>
+				<field name="department_id" readonly="state != 'draft'" optional="show"/>
+				<field name="request_date" readonly="state != 'draft'"/>
+				<field name="expected_date" readonly="state != 'draft'" optional="show"/>
+				<field name="total_estimated_cost" widget="monetary" optional="show"/>
+				<field name="currency_id" readonly="state != 'draft'" column_invisible="1"/>
+				<field name="state" widget="badge" decoration-info="state == 'draft'" decoration-warning="state == 'to_approve'" decoration-success="state in ('approved','done')" decoration-danger="state == 'refused'"/>
+				<field name="is_late" column_invisible="1"/>
+			</list>
+		</field>
+	</record>
+
+	<!-- Vue Formulaire -->
+	<record id="view_adk_pro_form" model="ir.ui.view">
+		<field name="name">adk.purchase.request.order.form</field>
+		<field name="model">adk.purchase.request.order</field>
+		<field name="arch" type="xml">
+			<form>
+				<header>
+					<button name="action_request_approval" string="Demander l'autorisation" type="object" invisible="state != 'draft'" class="btn-primary"/>
+					<button name="action_reset_to_draft" string="Réinitialiser" type="object" invisible="state not in ('to_approve','refused')"/>
+					<button name="action_reset_to_draft" string="Réinitialiser (approbation)" type="object" invisible="state != 'approved'" groups="adk_purchase_request.group_adk_purchase_request_manager" class="btn-secondary"/>
+					<button name="action_create_purchase_orders" string="Créer une demande de prix" type="object" invisible="state != 'approved' or pending_rfq_lines == 0" class="btn-success"/>
+					<button name="action_refuse" string="Rejeter" type="object" invisible="state != 'to_approve'" groups="adk_purchase_request.group_adk_purchase_request_manager"/>
+					<button name="action_approve" string="Approuver" type="object" invisible="state != 'to_approve'" class="btn-success" groups="adk_purchase_request.group_adk_purchase_request_manager"/>
+					<button name="action_done" string="Terminé" type="object" invisible="state != 'approved'" groups="adk_purchase_request.group_adk_purchase_request_manager"/>
+					<button name="%(action_report_adk_purchase_request)d" string="Imprimer" type="action" invisible="state == 'draft'" class="btn-secondary"/>
+					<field name="state" widget="statusbar" statusbar_visible="draft,to_approve,approved,refused,done" readonly="1"/>
+				</header>
+				<sheet>
+					<div class="oe_button_box" name="button_box">
+						<button name="action_view_purchase_orders" type="object" class="oe_stat_button" icon="fa-shopping-cart" invisible="purchase_count == 0">
+							<field name="purchase_count" widget="statinfo" string="Bons de commande"/>
+						</button>
+						<button name="action_view_purchase_order_lines" type="object" class="oe_stat_button" icon="fa-list" invisible="purchase_order_line_count == 0">
+							<field name="purchase_order_line_count" widget="statinfo" string="Lignes de commande"/>
+						</button>
+						<button name="action_view_pickings" type="object" class="oe_stat_button" icon="fa-truck" invisible="picking_count == 0">
+							<field name="picking_count" widget="statinfo" string="Transferts"/>
+						</button>
+					</div>
+					<widget name="web_ribbon" title="En retard" bg_color="text-bg-danger" invisible="not is_late"/>
+					<div class="oe_title">
+						<span class="o_form_label">Référence de la demande</span>
+						<h1>
+							<field name="name" readonly="1"/>
+						</h1>
+					</div>
+					<group>
+						<group>
+							<field name="demandeur_id" widget="many2one_avatar_user" string="Demandeur" readonly="state != 'draft'"/>
+							<field name="department_id" readonly="state != 'draft'"/>
+							<field name="assigned_id" readonly="state != 'draft'" string="Approbateur"/>
+							<field name="request_date" string="Date de création" readonly="state != 'draft'"/>
+							<field name="picking_type_id" readonly="state != 'draft'" string="Site de livraison"/>
+							<field name="company_id" readonly="state != 'draft'" groups="base.group_multi_company"/>
+							<field name="warehouse_id" readonly="state != 'draft'" string="Unité opérationnelle"/>
+							<field name="currency_id" string="Devise" readonly="state != 'draft'"/>
+						</group>
+						<group>
+							<field name="origin" readonly="state != 'draft'" string="Document source"/>
+							<field name="description" readonly="state != 'draft'"/>
+							<field name="procurement_group_id" readonly="state != 'draft'" string="Groupe d'approvisionnement"/>
+							<field name="reparation_ref" readonly="state != 'draft'" string="Réparation"/>
+							<field name="expected_date" readonly="state != 'draft'"/>
+							<field name="total_estimated_cost" widget="monetary"/>
+						</group>
+					</group>
+					<notebook>
+						<page string="Articles" name="lines">
+							<field name="line_ids">
+								<list editable="bottom">
+									<field name="include_in_rfq" string="Inclure DP" readonly="parent.state != 'approved' or line_status != 'to_order'"/>
+									<field name="product_id" readonly="parent.state != 'draft'"/>
+									<field name="description" readonly="parent.state != 'draft'"/>
+									<field name="destination_location_id" readonly="parent.state != 'draft'"/>
+									<field name="qty" readonly="parent.state != 'draft'"/>
+									<field name="product_uom_id" groups="uom.group_uom"/>
+									<field name="date_required" readonly="parent.state != 'draft'"/>
+									<field name="estimated_unit_cost" widget="monetary" optional="show" readonly="parent.state != 'draft'"/>
+									<field name="estimated_subtotal" widget="monetary"/>
+									<field name="company_id" column_invisible="1"/>
+									<field name="rfq_po_qty" string="RFQ/PO Qty"/>
+									<field name="qty_received" string="Quantité reçue"/>
+									<field name="line_status" widget="badge" string="Statut d'achat"/>
+									<field name="supplier_id" readonly="parent.state != 'approved' or line_status != 'to_order'"/>
+									<field name="currency_id" column_invisible="1"/>
+								</list>
+							</field>
+						</page>
+					</notebook>
+				</sheet>
+				<chatter/>
+			</form>
+		</field>
+	</record>
+
+	<!-- Action -->
+	<record id="action_adk_pro" model="ir.actions.act_window">
+		<field name="name">Demandes d'achat</field>
+		<field name="res_model">adk.purchase.request.order</field>
+		<field name="view_mode">list,kanban,form,graph,pivot,calendar</field>
+		<field name="search_view_id" ref="view_adk_pro_search"/>
+		<field name="help" type="html">
+			<p class="o_view_nocontent_smiling_face">
+				Créez votre première demande d'achat
+			</p>
+		</field>
+	</record>
+</odoo>

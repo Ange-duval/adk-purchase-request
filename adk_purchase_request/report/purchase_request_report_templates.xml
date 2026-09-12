@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="report_adk_purchase_request_document">
+		<t t-call="web.external_layout">
+			<t t-set="o" t-value="o.with_context(lang=o.demandeur_id.lang or env.lang)"/>
+			<div class="page">
+				<h2>
+					Demande d'Achat <span t-field="o.name"/>
+				</h2>
+
+				<!-- Correction Bootstrap 5 (mt-4 mb-4) -->
+				<div class="row mt-4 mb-4">
+					<div class="col-4">
+						<strong>Demandeur :</strong>
+						<p t-field="o.demandeur_id.name"/>
+						<strong>Département :</strong>
+						<p t-field="o.department_id.name"/>
+						<strong>Approbateur :</strong>
+						<p t-field="o.assigned_id.name"/>
+					</div>
+					<div class="col-4">
+						<strong>Date de la demande :</strong>
+						<p t-field="o.request_date"/>
+						<strong>Date souhaitée :</strong>
+						<p t-field="o.expected_date"/>
+						<strong>Unité opérationnelle :</strong>
+						<p t-field="o.warehouse_id.name"/>
+					</div>
+					<div class="col-4">
+						<strong>État :</strong>
+						<p t-field="o.state"/>
+						<strong>Coût estimé total :</strong>
+						<p t-field="o.total_estimated_cost"/>
+					</div>
+				</div>
+
+				<table class="table table-sm o_main_table">
+					<thead>
+						<tr>
+							<th>Article</th>
+							<th class="text-end">Quantité</th>
+							<th>Unité</th>
+							<th class="text-end">Coût unitaire estimé</th>
+							<th class="text-end">Sous-total estimé</th>
+							<th>Fournisseur suggéré</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr t-foreach="o.line_ids" t-as="line">
+							<td>
+								<span t-field="line.product_id.display_name"/>
+							</td>
+							<!-- Sécurisation du champ de quantité (mettez line.product_qty si line.qty n'existe pas) -->
+							<td class="text-end">
+								<span t-field="line.qty"/>
+							</td>
+							<td>
+								<span t-field="line.product_uom_id.name"/>
+							</td>
+							<td class="text-end">
+								<span t-field="line.estimated_unit_cost"/>
+							</td>
+							<td class="text-end">
+								<span t-field="line.estimated_subtotal"/>
+							</td>
+							<td>
+								<span t-field="line.supplier_id.name"/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="row mt-4" t-if="o.description">
+					<div class="col-12">
+						<strong>Motif / Description :</strong>
+						<p t-field="o.description"/>
+					</div>
+				</div>
+			</div>
+		</t>
+	</template>
+
+	<template id="report_adk_purchase_request">
+		<t t-call="web.html_container">
+			<t t-foreach="docs" t-as="o">
+				<t t-call="adk_purchase_request.report_adk_purchase_request_document" t-lang="o.demandeur_id.lang or env.lang"/>
+			</t>
+		</t>
+	</template>
+</odoo>

@@ -1,0 +1,25 @@
+<odoo>
+
+    <!-- ========================= -->
+    <!-- GROUPE UTILISATEUR -->
+    <!-- ========================= -->
+    <!-- Implique les groupes natifs minimaux pour pouvoir consulter les bons de commande, -->
+    <!-- appels d'offres et transferts générés depuis une demande d'achat. -->
+
+    <record id="group_adk_purchase_request_user" model="res.groups">
+        <field name="name">Utilisateur Demande d'Achat</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+        <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user')), (4, ref('stock.group_stock_user'))]"/>
+    </record>
+
+    <!-- ========================= -->
+    <!-- GROUPE MANAGER -->
+    <!-- ========================= -->
+
+    <record id="group_adk_purchase_request_manager" model="res.groups">
+        <field name="name">Manager Demande d'Achat</field>
+        <field name="implied_ids" eval="[(4, ref('group_adk_purchase_request_user')), (4, ref('purchase.group_purchase_manager'))]"/>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+
+</odoo>

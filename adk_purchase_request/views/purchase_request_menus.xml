@@ -1,0 +1,15 @@
+<odoo>
+
+    <!-- Application racine avec logo ADK -->
+    <menuitem id="menu_adk_pro_root" name="Demandes d'Achat ADK" sequence="11" web_icon="adk_purchase_request,static/description/icon.png"/>
+
+    <menuitem id="menu_adk_pro" parent="menu_adk_pro_root" action="action_adk_pro" name="Demandes" sequence="10"/>
+
+    <menuitem id="menu_adk_pro_dashboard_article" parent="menu_adk_pro_root" action="action_adk_pro_article_dashboard" name="Tableau de bord par article" sequence="6"/>
+
+    <menuitem id="menu_adk_pro_reporting" parent="menu_adk_pro_root" name="Rapports" sequence="20"/>
+    <menuitem id="menu_adk_pro_analysis" parent="menu_adk_pro_reporting" action="action_adk_pro_analysis" name="Analyse" sequence="10"/>
+    <menuitem id="menu_adk_pro_late" parent="menu_adk_pro_reporting" action="action_adk_pro_late" name="Demandes en retard" sequence="20"/>
+    <menuitem id="menu_adk_pro_my" parent="menu_adk_pro_reporting" action="action_adk_pro_my" name="Mes demandes" sequence="30"/>
+
+</odoo>
