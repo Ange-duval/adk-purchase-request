@@ -1,131 +1,327 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <title>ADK Demande d'Achat</title>
 </head>
+
 <body>
 
 <div align="center">
 <img src="icon.png" width="56" height="56" alt="ADK"><br>
 <h1>ADK Demande d'Achat</h1>
-<p>Gestion compl&egrave;te des demandes d'achat internes dans Odoo 18 : circuit d'approbation, appels d'offres multi-fournisseurs, suivi des commandes et livraisons, reporting par article.</p>
-<p><font size="2" color="#8a8189">Odoo 18 &nbsp;&middot;&nbsp; Circuit d'approbation &nbsp;&middot;&nbsp; RFQ multi-fournisseurs &nbsp;&middot;&nbsp; Suivi des livraisons &nbsp;&middot;&nbsp; Reporting par article</font></p>
+
+<p>
+Gestion complète des demandes d'achat internes dans Odoo 18 :
+circuit d'approbation, appels d'offres multi-fournisseurs,
+suivi des commandes et livraisons, reporting par article.
+</p>
+
+<p>
+<font size="2" color="#8a8189">
+Odoo 18 &nbsp;&middot;&nbsp;
+Circuit d'approbation &nbsp;&middot;&nbsp;
+RFQ multi-fournisseurs &nbsp;&middot;&nbsp;
+Suivi des livraisons &nbsp;&middot;&nbsp;
+Reporting par article
+</font>
+</p>
 </div>
 
 <hr>
 
-<h2>R&ocirc;les utilisateurs</h2>
-<p>Le module ajoute deux r&ocirc;les d'acc&egrave;s. V&eacute;rifiez qu'ils correspondent &agrave; l'organisation de votre &eacute;quipe avant la mise en production.</p>
+<h2>Rôles utilisateurs</h2>
+
+<p>
+Le module ajoute deux rôles d'accès. Vérifiez qu'ils correspondent
+à l'organisation de votre équipe avant la mise en production.
+</p>
 
 <h3>Utilisateur Demande d'Achat</h3>
 <ul>
-<li>Cr&eacute;e ses propres demandes d'achat et leurs lignes d'articles</li>
+<li>Crée ses propres demandes d'achat et leurs lignes d'articles</li>
 <li>Peut les modifier et les soumettre tant qu'elles restent en Brouillon</li>
-<li>Peut r&eacute;initialiser une demande Refus&eacute;e pour la corriger et la resoumettre</li>
-<li>Acc&egrave;s en lecture/&eacute;criture aux demandes et &agrave; leurs lignes (aucune suppression)</li>
+<li>Peut réinitialiser une demande Refusée pour la corriger et la resoumettre</li>
+<li>Accès en lecture/écriture aux demandes et à leurs lignes (aucune suppression)</li>
 </ul>
 
 <h3>Manager Demande d'Achat</h3>
 <ul>
 <li>Cumule tous les droits Utilisateur, plus le droit Achats (Manager)</li>
-<li>Seul habilit&eacute; &agrave; Approuver ou Rejeter une demande &laquo;&nbsp;&Agrave; approuver&nbsp;&raquo;</li>
-<li>Seul habilit&eacute; &agrave; r&eacute;initialiser en Brouillon une demande d&eacute;j&agrave; Approuv&eacute;e</li>
-<li>Seul habilit&eacute; &agrave; cl&ocirc;turer (&laquo;&nbsp;Terminer&nbsp;&raquo;) une demande Approuv&eacute;e</li>
-<li>Acc&egrave;s complet (cr&eacute;ation/modification/suppression) sur les demandes et leurs lignes</li>
+<li>Seul habilité à Approuver ou Rejeter une demande « À approuver »</li>
+<li>Seul habilité à réinitialiser en Brouillon une demande déjà Approuvée</li>
+<li>Seul habilité à clôturer (« Terminer ») une demande Approuvée</li>
+<li>Accès complet (création/modification/suppression) sur les demandes et leurs lignes</li>
 </ul>
 
 <hr>
 
-<h2>Le processus, &eacute;tape par &eacute;tape</h2>
+<h2>Le processus, étape par étape</h2>
 
-<h3>1. Droits d'acc&egrave;s</h3>
-<p>Les r&ocirc;les Utilisateur et Manager Demande d'Achat s'attribuent depuis Param&egrave;tres &gt; Utilisateurs, comme n'importe quel droit Odoo.</p>
-<div align="center"><img src="screenshots/01-droits-utilisateur.png" width="560" alt="Attribution des droits Utilisateur et Manager Demande d'Achat"></div>
+<h3>1. Droits d'accès</h3>
+
+<p>
+Les rôles Utilisateur et Manager Demande d'Achat s'attribuent depuis
+Paramètres &gt; Utilisateurs, comme n'importe quel droit Odoo.
+</p>
+
+<div align="center">
+<img src="screenshots/01-droits-utilisateur.png"
+     width="560"
+     alt="Attribution des droits Utilisateur et Manager Demande d'Achat">
+</div>
 
 <br>
 
-<h3>2. Cr&eacute;ation de la demande (Brouillon)</h3>
-<p>Le demandeur ajoute ses lignes d'articles avec la quantit&eacute; souhait&eacute;e, puis soumet la demande &agrave; l'autorisation.</p>
-<div align="center"><img src="screenshots/02-creation-brouillon.png" width="560" alt="Formulaire d'une demande d'achat en Brouillon"></div>
+<h3>2. Création de la demande (Brouillon)</h3>
+
+<p>
+Le demandeur ajoute ses lignes d'articles avec la quantité souhaitée,
+puis soumet la demande à l'autorisation.
+</p>
+
+<div align="center">
+<img src="screenshots/02-creation-brouillon.png"
+     width="560"
+     alt="Formulaire d'une demande d'achat en Brouillon">
+</div>
 
 <br>
 
 <h3>3. Approbation par le Manager</h3>
-<p>Le Manager examine la demande &laquo;&nbsp;&Agrave; approuver&nbsp;&raquo; et peut l'Approuver, la Rejeter, ou la R&eacute;initialiser en Brouillon.</p>
-<div align="center"><img src="screenshots/03-approbation-manager.png" width="560" alt="Demande &agrave; approuver, avec les boutons Approuver et Rejeter"></div>
+
+<p>
+Le Manager examine la demande « À approuver » et peut l'Approuver,
+la Rejeter, ou la Réinitialiser en Brouillon.
+</p>
+
+<div align="center">
+<img src="screenshots/03-approbation-manager.png"
+     width="560"
+     alt="Demande à approuver, avec les boutons Approuver et Rejeter">
+</div>
 
 <br>
 
-<h3>4. S&eacute;lection des fournisseurs et RFQ</h3>
-<p>Une fois Approuv&eacute;e, la demande permet de cocher des lignes, renseigner un fournisseur sugg&eacute;r&eacute; par ligne, et cr&eacute;er une ou plusieurs demandes de prix.</p>
-<div align="center"><img src="screenshots/04-selection-fournisseur-rfq.png" width="560" alt="S&eacute;lection des lignes et des fournisseurs pour cr&eacute;er une demande de prix"></div>
+<h3>4. Sélection des fournisseurs et RFQ</h3>
+
+<p>
+Une fois Approuvée, la demande permet de cocher des lignes,
+renseigner un fournisseur suggéré par ligne, et créer une ou
+plusieurs demandes de prix.
+</p>
+
+<div align="center">
+<img src="screenshots/04-selection-fournisseur-rfq.png"
+     width="560"
+     alt="Sélection des lignes et des fournisseurs pour créer une demande de prix">
+</div>
 
 <br>
 
 <h3>5. Suivi des commandes</h3>
-<p>Les bons de commande, lignes de commande et transferts de r&eacute;ception g&eacute;n&eacute;r&eacute;s restent accessibles en un clic depuis la demande.</p>
-<div align="center"><img src="screenshots/05-suivi-commandes.png" width="560" alt="Suivi des bons de commande et lignes de commande depuis la demande"></div>
+
+<p>
+Les bons de commande, lignes de commande et transferts de réception
+générés restent accessibles en un clic depuis la demande.
+</p>
+
+<div align="center">
+<img src="screenshots/05-suivi-commandes.png"
+     width="560"
+     alt="Suivi des bons de commande et lignes de commande depuis la demande">
+</div>
 
 <br>
 
 <h3>6. Tableau de bord</h3>
-<p>Une vue kanban regroupe les demandes avec leur avancement, leurs co&ucirc;ts et leur fournisseur.</p>
-<div align="center"><img src="screenshots/06-tableau-bord-kanban.png" width="560" alt="Tableau de bord kanban des demandes d'achat"></div>
+
+<p>
+Une vue kanban regroupe les demandes avec leur avancement,
+leurs coûts et leur fournisseur.
+</p>
+
+<div align="center">
+<img src="screenshots/06-tableau-bord-kanban.png"
+     width="560"
+     alt="Tableau de bord kanban des demandes d'achat">
+</div>
 
 <br>
 
-<h3>7. Analyse crois&eacute;e par article</h3>
-<p>La vue pivot croise articles et p&eacute;riodes pour suivre les quantit&eacute;s demand&eacute;es, command&eacute;es et re&ccedil;ues dans le temps.</p>
-<div align="center"><img src="screenshots/07-tableau-croise-articles.png" width="560" alt="Tableau crois&eacute; dynamique des quantit&eacute;s par article et par mois"></div>
+<h3>7. Analyse croisée par article</h3>
+
+<p>
+La vue pivot croise articles et périodes pour suivre les quantités
+demandées, commandées et reçues dans le temps.
+</p>
+
+<div align="center">
+<img src="screenshots/07-tableau-croise-articles.png"
+     width="560"
+     alt="Tableau croisé dynamique des quantités par article et par mois">
+</div>
 
 <hr>
 
 <h2>Cycle de vie d'une demande</h2>
-<p>Cinq &eacute;tats, un circuit clair.</p>
-<div align="center"><img src="diagrams/cycle-flow.png" width="480" alt="Sch&eacute;ma du cycle de vie : Brouillon, &Agrave; approuver, Approuv&eacute;, Refus&eacute;, Termin&eacute;, avec r&eacute;initialisations possibles"></div>
 
-<ul>
-<li><b>Brouillon</b> &mdash; cr&eacute;&eacute;e par le demandeur, tout reste modifiable</li>
-<li><b>&Agrave; approuver</b> &mdash; en attente d'une d&eacute;cision du Manager (Approuver, Rejeter, ou R&eacute;initialiser)</li>
-<li><b>Approuv&eacute;</b> &mdash; s&eacute;lection des lignes, fournisseurs et cr&eacute;ation des demandes de prix ; le Manager peut r&eacute;initialiser en Brouillon ou terminer la demande</li>
-<li><b>Refus&eacute;</b> &mdash; le demandeur peut r&eacute;initialiser en Brouillon pour corriger et resoumettre</li>
-<li><b>Termin&eacute;</b> &mdash; demande cl&ocirc;tur&eacute;e par le Manager, conserv&eacute;e pour l'historique et le reporting</li>
-</ul>
-
-<p><b>Verrouillage des donn&eacute;es :</b> une fois sortie du Brouillon, la demande verrouille ses champs d'en-t&ecirc;te et ses lignes existantes (seules les cases &laquo;&nbsp;Inclure DP&nbsp;&raquo; et &laquo;&nbsp;Fournisseur sugg&eacute;r&eacute;&nbsp;&raquo; restent modifiables en Approuv&eacute;, le temps de pr&eacute;parer les demandes de prix).</p>
-<p><b>Protection anti-suppression :</b> une demande d'achat ne peut pas &ecirc;tre supprim&eacute;e si elle a d&eacute;j&agrave; g&eacute;n&eacute;r&eacute; au moins un bon de commande, une ligne de commande ou une r&eacute;ception.</p>
-
-<hr>
-
-<h2>Int&eacute;gration native avec l'application Achats</h2>
-<ul>
-<li>Un bouton statistique &laquo;&nbsp;Demande d'achat&nbsp;&raquo; sur le bon de commande ram&egrave;ne directement &agrave; la demande ADK d'origine</li>
-<li>Une colonne et un filtre de recherche &laquo;&nbsp;Demande d'achat&nbsp;&raquo; sont disponibles dans la liste des commandes (Achats &rarr; Commandes)</li>
-<li>Menu &laquo;&nbsp;Demandes d'achat (ADK)&nbsp;&raquo; : toutes les demandes, tous statuts</li>
-<li>Menu &laquo;&nbsp;Lignes de commande (ADK)&nbsp;&raquo; : suivi ligne par ligne, tous articles confondus</li>
-<li>Menu &laquo;&nbsp;Tableau de bord articles (ADK)&nbsp;&raquo; : vision transverse par article</li>
-</ul>
-
-<hr>
-
-<h2>Fonctionnalit&eacute;s</h2>
-<ol>
-<li><b>Workflow contr&ocirc;l&eacute;</b> &mdash; Brouillon &rarr; &Agrave; approuver &rarr; Approuv&eacute; &rarr; Termin&eacute;, avec refus et r&eacute;initialisation encadr&eacute;s par les r&ocirc;les</li>
-<li><b>RFQ multi-fournisseurs</b> &mdash; s&eacute;lection ligne par ligne, une demande de prix par fournisseur, g&eacute;n&eacute;rable en plusieurs vagues successives</li>
-<li><b>Suivi complet</b> &mdash; bons de commande, lignes de commande et transferts de r&eacute;ception accessibles en un clic depuis la demande</li>
-<li><b>Tra&ccedil;abilit&eacute;</b> &mdash; chatter, suivi des changements de champs et activit&eacute;s sur chaque demande ; suppression impossible une fois des documents g&eacute;n&eacute;r&eacute;s</li>
-<li><b>Reporting</b> &mdash; kanban, liste, graphique, pivot, calendrier et tableau de bord d&eacute;di&eacute; par article</li>
-<li><b>Rapport PDF</b> &mdash; impression de la demande d'achat compl&egrave;te avec ses lignes, co&ucirc;ts estim&eacute;s et fournisseurs sugg&eacute;r&eacute;s</li>
-</ol>
-
-<p>Module 100% natif Odoo 18, construit sur les applications Achats (purchase, purchase_stock), Stock, RH et Discuss (mail), sans d&eacute;pendance externe.</p>
-
-<hr>
+<p>Cinq états, un circuit clair.</p>
 
 <div align="center">
-<font size="2" color="#8a8189">D&eacute;velopp&eacute; par Dev KAMBEU HENANG ANGE DUVAL &nbsp;&middot;&nbsp; duvalkambeu61@gmail.com</font>
+<img src="diagrams/cycle-flow.png"
+     width="480"
+     alt="Schéma du cycle de vie : Brouillon, À approuver, Approuvé, Refusé, Terminé, avec réinitialisations possibles">
+</div>
+
+<ul>
+<li><b>Brouillon</b> — créée par le demandeur, tout reste modifiable</li>
+
+<li>
+<b>À approuver</b> — en attente d'une décision du Manager
+(Approuver, Rejeter, ou Réinitialiser)
+</li>
+
+<li>
+<b>Approuvé</b> — sélection des lignes, fournisseurs et création
+des demandes de prix ; le Manager peut réinitialiser en Brouillon
+ou terminer la demande
+</li>
+
+<li>
+<b>Refusé</b> — le demandeur peut réinitialiser en Brouillon
+pour corriger et resoumettre
+</li>
+
+<li>
+<b>Terminé</b> — demande clôturée par le Manager, conservée
+pour l'historique et le reporting
+</li>
+</ul>
+
+<p>
+<b>Verrouillage des données :</b>
+une fois sortie du Brouillon, la demande verrouille ses champs
+d'en-tête et ses lignes existantes (seules les cases « Inclure DP »
+et « Fournisseur suggéré » restent modifiables en Approuvé,
+le temps de préparer les demandes de prix).
+</p>
+
+<p>
+<b>Protection anti-suppression :</b>
+une demande d'achat ne peut pas être supprimée si elle a déjà
+généré au moins un bon de commande, une ligne de commande
+ou une réception.
+</p>
+
+<hr>
+
+<h2>Intégration native avec l'application Achats</h2>
+
+<ul>
+<li>
+Un bouton statistique « Demande d'achat » sur le bon de commande
+ramène directement à la demande ADK d'origine
+</li>
+
+<li>
+Une colonne et un filtre de recherche « Demande d'achat »
+sont disponibles dans la liste des commandes
+(Achats &rarr; Commandes)
+</li>
+
+<li>
+Menu « Demandes d'achat (ADK) » : toutes les demandes,
+tous statuts
+</li>
+
+<li>
+Menu « Lignes de commande (ADK) » : suivi ligne par ligne,
+tous articles confondus
+</li>
+
+<li>
+Menu « Tableau de bord articles (ADK) » :
+vision transverse par article
+</li>
+</ul>
+
+<hr>
+
+<h2>Fonctionnalités</h2>
+
+<ol>
+
+<li>
+<b>Workflow contrôlé</b> — Brouillon &rarr; À approuver &rarr;
+Approuvé &rarr; Terminé, avec refus et réinitialisation
+encadrés par les rôles
+</li>
+
+<li>
+<b>RFQ multi-fournisseurs</b> — sélection ligne par ligne,
+une demande de prix par fournisseur, générable en plusieurs
+vagues successives
+</li>
+
+<li>
+<b>Suivi complet</b> — bons de commande, lignes de commande
+et transferts de réception accessibles en un clic depuis la demande
+</li>
+
+<li>
+<b>Traçabilité</b> — chatter, suivi des changements de champs
+et activités sur chaque demande ; suppression impossible
+une fois des documents générés
+</li>
+
+<li>
+<b>Reporting</b> — kanban, liste, graphique, pivot, calendrier
+et tableau de bord dédié par article
+</li>
+
+<li>
+<b>Rapport PDF</b> — impression de la demande d'achat complète
+avec ses lignes, coûts estimés et fournisseurs suggérés
+</li>
+
+</ol>
+
+<p>
+Module 100% natif Odoo 18, construit sur les applications
+Achats (purchase, purchase_stock), Stock, RH et Discuss (mail),
+sans dépendance externe.
+</p>
+
+<hr>
+
+<!-- SUPPORT / AUTHOR -->
+<div style="text-align:center; padding:30px; border-top:2px solid #eee;">
+
+<h2 style="font-size:20px; color:#1B3B6F; margin-bottom:10px;">
+Support et auteur
+</h2>
+
+<p style="color:#555; font-size:15px; margin:4px 0;">
+<strong>Auteur :</strong> Kambeu Henang Ange Duval
+</p>
+
+<p style="color:#555; font-size:15px; margin:4px 0;">
+<strong>Support :</strong>
+<a href="mailto:duvalkambeu61@gmail.com">
+duvalkambeu61@gmail.com
+</a>
+</p>
+
+<p style="color:#888; font-size:13px; margin-top:16px;">
+Une question, un bug, une demande d'évolution ?
+<br>
+Contactez-nous, nous répondons rapidement.
+</p>
+
 </div>
 
 </body>
 </html>
+```
